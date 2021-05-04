@@ -23,3 +23,6 @@ flutter:
    assets:
     - data/
     - languages.json
+
+dependency_overrides:
+  intl: ^0.17.0
