@@ -26,34 +26,35 @@ class CountryNames {
   }
 }
 
-class CountryNamesLocalizationsDelegate extends LocalizationsDelegate<CountryNames?> {
+class CountryNamesLocalizationsDelegate
+    extends LocalizationsDelegate<CountryNames> {
   final AssetBundle? bundle;
   const CountryNamesLocalizationsDelegate({this.bundle});
 
   Future<List<String>> locales() async {
-    return List<String>.from(await _loadJSON('languages.json') as List<dynamic>);
+    return List<String>.from(
+        await _loadJSON('languages.json') as List<dynamic>);
   }
 
   @override
   bool isSupported(Locale locale) => true;
 
   @override
-  Future<CountryNames?> load(Locale locale) async {
-    final String name = locale.countryCode == null ? locale.languageCode : locale.toString();
+  Future<CountryNames> load(Locale locale) async {
+    final String name =
+        locale.countryCode == null ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
 
     var locales = Set<String>.from(await this.locales());
 
     var availableLocale = Intl.verifiedLocale(
-      localeName,
-      (locale) => locales.contains(locale),
-      onFailure: (_) => 'en'
-    );
-    if (availableLocale == null) {
-      return null;
-    }
+        localeName, (locale) => locales.contains(locale),
+        onFailure: (_) => 'en');
 
-    final data = Map<String, String>.from(await _loadJSON('data/$availableLocale.json') as Map<dynamic, dynamic>);
+    availableLocale ??= 'en_US';
+
+    final data = Map<String, String>.from(
+        await _loadJSON('data/$availableLocale.json') as Map<dynamic, dynamic>);
     return CountryNames(availableLocale, data);
   }
 
@@ -65,6 +66,7 @@ class CountryNamesLocalizationsDelegate extends LocalizationsDelegate<CountryNam
   Future<dynamic> _loadJSON(key) {
     Future<dynamic> parser(String data) async => jsonDecode(data);
     final bundle = this.bundle ?? rootBundle;
-    return bundle.loadStructuredData('packages/flutter_localized_countries/' + key, parser);
+    return bundle.loadStructuredData(
+        'packages/flutter_localized_countries/' + key, parser);
   }
 }
