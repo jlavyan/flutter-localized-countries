@@ -8,7 +8,7 @@ import 'dart:typed_data';
 
 class TestAssetBundle extends CachingAssetBundle {
   @override
-  Future<ByteData?> load(String key) async {
+  Future<ByteData> load(String key) async {
     const prefix = "packages/flutter_localized_countries/";
     if (key.startsWith(prefix)) {
       var path = join(dirname(Platform.script.toFilePath()), key.substring(prefix.length));
@@ -16,7 +16,8 @@ class TestAssetBundle extends CachingAssetBundle {
       var buffer = bytes.buffer;
       return ByteData.view(buffer);
     }
-    return null;
+
+    return ByteData(0);
   }
 }
 

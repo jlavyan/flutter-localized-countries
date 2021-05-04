@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 
 class CountryNames {
-  static CountryNames of(BuildContext context) {
+  static CountryNames? of(BuildContext context) {
     return Localizations.of<CountryNames>(context, CountryNames);
   }
 
@@ -15,7 +15,7 @@ class CountryNames {
   final Map<String, String> data;
   CountryNames(this.locale, this.data);
 
-  String nameOf(String code) => data[code];
+  String? nameOf(String code) => data[code];
 
   List<MapEntry<String, String>> get sortedByCode {
     return data.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
@@ -26,8 +26,8 @@ class CountryNames {
   }
 }
 
-class CountryNamesLocalizationsDelegate extends LocalizationsDelegate<CountryNames> {
-  final AssetBundle bundle;
+class CountryNamesLocalizationsDelegate extends LocalizationsDelegate<CountryNames?> {
+  final AssetBundle? bundle;
   const CountryNamesLocalizationsDelegate({this.bundle});
 
   Future<List<String>> locales() async {
@@ -38,7 +38,7 @@ class CountryNamesLocalizationsDelegate extends LocalizationsDelegate<CountryNam
   bool isSupported(Locale locale) => true;
 
   @override
-  Future<CountryNames> load(Locale locale) async {
+  Future<CountryNames?> load(Locale locale) async {
     final String name = locale.countryCode == null ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
 
@@ -58,7 +58,7 @@ class CountryNamesLocalizationsDelegate extends LocalizationsDelegate<CountryNam
   }
 
   @override
-  bool shouldReload(LocalizationsDelegate<CountryNames> old) {
+  bool shouldReload(LocalizationsDelegate<CountryNames?> old) {
     return false;
   }
 
